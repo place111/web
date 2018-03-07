@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 
 namespace WebApplication1
 {
@@ -21,7 +23,11 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+
+            services.AddRazorProject(@"C:\Users\Administrator\source\repos\WebApplication1");
+
+            services.AddMvc().LoadBasePathAssembly();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,7 +40,7 @@ namespace WebApplication1
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();
@@ -43,7 +49,7 @@ namespace WebApplication1
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
